@@ -142,7 +142,20 @@ Construis mentalement l'arbre.
 
 Rappel : **par défaut, toutes les pages d'un thème partagent le même template.** Une page peut dévier si nécessaire — c'est accepté.
 
-### B3. Génère `arborescence.md`
+### B3. Génère `arborescence.md` ET un `template.md` par dossier thématique
+
+**Principe clé** : l'architecture d'un site multi-pages repose sur **trois niveaux de documents** :
+
+1. **`arborescence.md`** à la racine → **plan global** du site (structure, liste des pages, navigation)
+2. **`section-[nom-de-page].md`** à la racine → **détail des sections** de chaque page top-level (ex. `section-accueil.md`, `section-contact.md`, `section-equipe.md`)
+3. **`/[theme]/template.md`** dans chaque dossier thématique → **détail du template** appliqué aux pages de ce dossier
+
+Cette séparation permet la **cascade maîtrisée** :
+- Modifier `section-accueil.md` = mise à jour de `accueil.html` uniquement.
+- Modifier `/offres/template.md` = mise à jour de toutes les pages de `/offres/`.
+- Autres documents intacts.
+
+### B3.1 — Générer `arborescence.md` (plan global)
 
 ```markdown
 # Arborescence — [nom du site]
@@ -153,37 +166,36 @@ Rappel : **par défaut, toutes les pages d'un thème partagent le même template
 ├── accueil.html
 ├── contact.html
 ├── equipe.html
+├── arborescence.md                  ← plan global
+├── section-accueil.md               ← sections de accueil.html
+├── section-contact.md               ← sections de contact.html
+├── section-equipe.md                ← sections de equipe.html
 ├── /[theme-1]
+│   ├── template.md                  ← template du dossier
 │   ├── page-1.html
 │   └── page-2.html
 └── /[theme-2]
+    ├── template.md                  ← template du dossier
     ├── page-1.html
     └── page-2.html
 
 ## Pages top-level
 
-### accueil.html
-- Rôle : orienter le visiteur vers le bon thème
-- Sections : [liste]
-- CTA principal : …
+Chaque page top-level a son propre fichier `section-[nom].md` à la racine.
+Pour modifier une page top-level : éditer le fichier correspondant, puis lancer `/ottho:corrige`.
 
-### contact.html
-- Rôle : convertir l'intérêt en prise de contact
-- Sections : Formulaire, Coordonnées, Horaires, FAQ
+- `section-accueil.md` — sections de `accueil.html`
+- `section-contact.md` — sections de `contact.html`
+- `section-equipe.md` — sections de `equipe.html`
 
-### equipe.html
-- Rôle : humaniser le site
-- Sections : [liste]
+## Thèmes (dossiers)
 
-## Templates par thème
+Chaque thème a son propre `template.md` qui définit la structure des pages de son dossier.
 
-### Template [Thème 1] (appliqué à /[theme-1]/*.html)
-- Sections : [liste ordonnée]
-- Variantes autorisées : [si applicable]
+- `/[theme-1]/template.md` — appliqué à toutes les pages de `/[theme-1]/`
+- `/[theme-2]/template.md` — appliqué à toutes les pages de `/[theme-2]/`
 
-### Template [Thème 2] (appliqué à /[theme-2]/*.html)
-- Sections : [liste ordonnée]
-- Variantes autorisées : [si applicable]
+Pour modifier la structure d'un thème, éditer le `template.md` correspondant puis lancer `/ottho:corrige` pour répercuter.
 
 ## Header (commun à toutes les pages, sticky)
 
@@ -211,6 +223,102 @@ Rappel : **par défaut, toutes les pages d'un thème partagent le même template
 Architecture générée le [date] par le plugin ottho.
 ```
 
+### B3.2 — Générer un `section-[nom].md` pour chaque page top-level
+
+Pour chaque page top-level (`accueil.html`, `contact.html`, `equipe.html`, `mentions-legales.html`…), crée un fichier `section-[nom-de-page].md` à la racine :
+
+```markdown
+# Sections — [nom de la page]
+
+> Ce document définit les sections de `[nom-de-page].html`.
+> Pour modifier : éditez ce fichier, puis lancez `/ottho:corrige` pour mettre à jour le HTML.
+
+## Ordre des sections
+1. Hero [nom-de-page]
+2. [Section spécifique 1]
+3. [Section spécifique 2]
+4. CTA
+
+## Détail par section
+
+### Section 1 — Hero [nom-de-page]
+
+- **Contenu textuel :**
+  - Titre : « … »
+  - Sous-titre : « … »
+  - CTA : « … »
+- **Contenu visuel :**
+  - Image : [dimensions, prompt Nano Banana si à générer]
+
+### Section 2 — [Nom]
+
+- **Contenu textuel :** …
+- **Contenu visuel :** …
+
+[Et ainsi de suite pour chaque section]
+
+## SEO spécifique à cette page
+
+- `<title>` : « [title unique pour cette page] »
+- `<meta description>` : « … »
+- `<h1>` : « … »
+- URL canonique : `https://[domaine]/[nom-de-page].html`
+
+Sections générées le [date] par le plugin ottho.
+```
+
+### B3.3 — Générer un `template.md` dans chaque dossier thématique
+
+Pour chaque dossier `/[theme]/`, crée un `template.md` dédié :
+
+```markdown
+# Template — [nom du thème]
+
+> Ce template s'applique à **toutes les pages HTML du dossier `/[theme]/`** (par défaut).
+> Pour modifier la structure : éditez ce fichier, puis lancez `/ottho:corrige` pour répercuter sur toutes les pages.
+
+## Sections (dans l'ordre)
+
+1. Hero [thème]
+2. [Section spécifique 1]
+3. [Section spécifique 2]
+4. Tarif (si produit payant)
+5. CTA « [Action] »
+
+## Détail par section
+
+### Section 1 — Hero [thème]
+
+- **Contenu textuel :**
+  - Titre : « [nom de la page] »
+  - Sous-titre : « … »
+  - CTA : « [verbe d'action] »
+- **Contenu visuel :**
+  - Image : [dimensions, prompt Nano Banana si à générer]
+
+### Section 2 — [Nom]
+
+- **Contenu textuel :** …
+- **Contenu visuel :** …
+
+[Et ainsi de suite pour chaque section]
+
+## Variantes autorisées
+
+Une page peut dévier du template si nécessaire. Variantes déjà enregistrées :
+
+- [page-1.html] : ajoute une section « Témoignages » après « Tarif ».
+- [page-2.html] : suit le template strict.
+
+## Règles techniques
+
+- Header et footer communs (repris depuis arborescence.md).
+- SEO : chaque page a son propre title / meta description / h1 spécifiques, mais structure HTML identique.
+- Responsive mobile-first.
+
+Template généré le [date] par le plugin ottho.
+```
+
 ### B3.bis — Règles importantes pour la génération HTML
 
 Quand tu génères les pages HTML à partir de ce plan :
@@ -227,26 +335,38 @@ Quand tu génères les pages HTML à partir de ce plan :
 ├── accueil.html
 ├── contact.html
 ├── equipe.html
-├── arborescence.md
+├── arborescence.md              ← plan global
+├── section-accueil.md           ← sections de accueil.html
+├── section-contact.md           ← sections de contact.html
+├── section-equipe.md            ← sections de equipe.html
 ├── /[theme-1]
+│   ├── template.md              ← template du dossier
 │   └── page-1.html
 ├── /[theme-2]
+│   ├── template.md
 │   └── page-1.html
 ├── /assets
 └── /api (contact.js — placeholder, branché au chapitre Hébergement)
 ```
 
+**Règle cascade :**
+- Modifier `section-[page].md` = mise à jour de la page top-level correspondante (`/ottho:corrige`).
+- Modifier `/[theme]/template.md` = mise à jour de toutes les pages du dossier (`/ottho:corrige`).
+- `arborescence.md` reste stable, sauf si on ajoute/supprime/renomme une page ou un thème.
+
 ---
 
 ## Clôture
 
-Affiche le chemin du fichier généré et dis :
+Affiche les chemins des fichiers générés et dis :
 
-> « Ton architecture est prête : `./[sections.md / arborescence.md]`. C'est ton plan détaillé.
+> « Ton architecture est prête :
+> - **Landing** : `./sections.md` (plan complet)
+> - **Site** : `./arborescence.md` (plan global) + un `./[theme]/template.md` dans chaque dossier thématique
 >
 > Prochaines étapes suggérées :
-> 1. Demande à Claude Code de **générer le HTML/CSS** à partir de ce plan (« Génère index.html en suivant sections.md »)
-> 2. `/generate-image` pour les images de ton site (hero, Open Graph, illustrations)
-> 3. `/cta-setup` quand le formulaire HTML est en place et que tu es au chapitre Hébergement
-> 4. `/seo-audit` pour vérifier les balises
-> 5. `/deploy` pour mettre en ligne »
+> 1. `/ottho:build` pour **générer les fichiers HTML/CSS/JS** à partir du plan
+> 2. `/ottho:generate-image` pour les images (hero, Open Graph, illustrations)
+> 3. `/ottho:cta-setup` au chapitre Hébergement, pour brancher le formulaire
+> 4. `/ottho:seo-audit` pour vérifier les balises
+> 5. `/ottho:deploy` pour mettre en ligne »

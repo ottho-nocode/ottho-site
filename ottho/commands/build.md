@@ -190,20 +190,31 @@ Ouvre `http://localhost:3000` dans le navigateur.
 
 ```
 /mon-site
-├── accueil.html              (top-level)
-├── contact.html              (top-level)
-├── equipe.html               (top-level)
-├── mentions-legales.html     (top-level, légal)
-├── confidentialite.html      (top-level, RGPD)
-├── /[theme-1]/               (dossier thématique)
+├── accueil.html                 (top-level)
+├── contact.html                 (top-level)
+├── equipe.html                  (top-level)
+├── mentions-legales.html        (top-level, légal)
+├── confidentialite.html         (top-level, RGPD)
+├── arborescence.md              (plan global du site)
+├── section-accueil.md           (sections de accueil.html)
+├── section-contact.md           (sections de contact.html)
+├── section-equipe.md            (sections de equipe.html)
+├── /[theme-1]/                  (dossier thématique)
+│   ├── template.md              ← template du dossier
 │   ├── page-1.html
 │   └── page-2.html
 ├── /[theme-2]/
+│   ├── template.md
 │   └── page-1.html
-├── /assets/                  (images communes)
+├── /assets/                     (images communes)
 └── /css/
-    └── style.css             (CSS commun à toutes les pages)
+    └── style.css                (CSS commun à toutes les pages)
 ```
+
+**Important** :
+- **Pour chaque page top-level**, lis le `section-[nom-de-page].md` correspondant — c'est lui qui définit les sections à respecter.
+- **Pour chaque dossier thématique**, lis son `template.md` — c'est lui qui définit les sections à respecter pour toutes les pages du dossier.
+- `arborescence.md` donne la structure globale (arbre + navigation).
 
 ### B2. Générer `header.html` et `footer.html` (templates communs)
 
@@ -324,21 +335,30 @@ CSS : dropdowns au `hover` en desktop, au `tap` en mobile (via `<details>` ou JS
 
 ### B5. Générer chaque page
 
-Pour chaque fichier dans `arborescence.md` :
-
 #### Pages top-level (accueil, contact, équipe…)
 
-Chacune a ses **sections propres** définies dans `arborescence.md`. Génère le HTML avec :
-- Header commun (copié dans le `<body>`)
-- Sections spécifiques à la page
-- Footer commun
-- SEO propre (title, description, H1, Open Graph spécifiques à la page)
+Pour chaque page top-level :
 
-#### Pages thématiques (dans les dossiers)
+1. **Lis son `section-[nom-de-page].md`** (ex. `section-accueil.md` pour `accueil.html`).
+2. **Génère le HTML** avec :
+   - Header commun (copié dans le `<body>`)
+   - Sections ordonnées selon `section-[nom].md`
+   - Footer commun
+   - SEO propre (title, description, H1, Open Graph) — récupérés depuis le `section-[nom].md`
 
-Chaque page applique le **template du dossier** (défini dans `arborescence.md`). Sections identiques pour toutes les pages du dossier, contenu spécifique par page.
+#### Pages thématiques (dans les dossiers `/[theme]/`)
 
-Si une page a une **variante** (déviation du template), respecte-la et note dans `arborescence.md` section Variantes.
+Pour chaque dossier thématique :
+
+1. **Lis le `template.md`** du dossier — c'est lui qui définit les sections ordonnées.
+2. **Génère toutes les pages HTML** du dossier en appliquant strictement ce template (mêmes sections, même ordre).
+3. **Contenu spécifique** de chaque page (titre, prix, cas d'usage, texte) défini dans chaque page individuellement mais structure identique.
+4. Si une page a une **variante** notée dans `template.md` (section Variantes autorisées), respecte-la.
+
+**Règle cascade** :
+- Modification d'un `section-[page].md` = régénération de cette page uniquement, les autres intactes.
+- Modification d'un `/[theme]/template.md` = régénération de toutes les pages du dossier, en conservant leur contenu spécifique.
+- `/ottho:corrige` gère ces cascades automatiquement.
 
 ### B6. Générer `style.css` commun
 

@@ -222,22 +222,16 @@ Dans un thème, les pages ont souvent la **même structure** (mêmes sections da
 - **Par défaut, toutes les pages d'un même thème partagent le même template.**
 - **Une page peut dévier** du template si nécessaire (ex. ajouter une section unique). C'est accepté.
 
-#### Pas de fichier de template séparé
+#### Trois niveaux de documents pivots
 
-Pas de `template.html` à écrire. Le template **vit dans `arborescence.md`** — Claude Code le comprend et l'applique.
+1. **`arborescence.md`** à la racine → **plan global** (arbre, pages top-level, navigation header/footer)
+2. **`section-[nom].md`** à la racine, un par page top-level → **détail des sections** de chaque page top-level
+3. **`/[theme]/template.md`** dans chaque dossier thématique → **template** appliqué aux pages du dossier
 
-#### Modification en cascade
-
-Si l'utilisateur modifie le template d'un thème :
-
-```
-J'ai mis à jour le template [Thème] dans arborescence.md
-(j'ai ajouté une section Témoignages après la section Tarif).
-Mets à jour toutes les pages de /[theme] pour suivre le nouveau template.
-Conserve le contenu spécifique de chaque page ; ne touche qu'à la structure.
-```
-
-Claude Code répercute sur toutes les pages du dossier.
+Cette séparation rend la cascade propre :
+- Modifier `section-accueil.md` = `accueil.html` régénéré uniquement.
+- Modifier `/offres/template.md` = toutes les pages de `/offres/` régénérées, autres dossiers intacts.
+- `arborescence.md` reste stable, sauf si l'arbre lui-même change.
 
 ### Document `arborescence.md` — structure type
 
@@ -250,35 +244,30 @@ Claude Code répercute sur toutes les pages du dossier.
 ├── accueil.html
 ├── contact.html
 ├── equipe.html
+├── arborescence.md
+├── section-accueil.md
+├── section-contact.md
+├── section-equipe.md
 ├── /[theme-1]
+│   ├── template.md
 │   ├── page-1.html
 │   └── page-2.html
 └── /[theme-2]
+    ├── template.md
     └── page-1.html
 
 ## Pages top-level
 
-### accueil.html
-- Rôle : orienter vers le bon thème
-- Sections : Hero, Bénéfices, Teasers vers les thèmes, Preuve sociale, CTA
+Chaque page top-level a son propre fichier `section-[nom].md` à la racine.
+- `section-accueil.md` — sections de `accueil.html`
+- `section-contact.md` — sections de `contact.html`
+- `section-equipe.md` — sections de `equipe.html`
 
-### contact.html
-- Rôle : convertir l'intérêt en prise de contact
-- Sections : Formulaire, Coordonnées, Horaires, FAQ
+## Thèmes (dossiers)
 
-### equipe.html
-- Rôle : humaniser
-- Sections : Hero équipe, Portraits, Valeurs, CTA
-
-## Templates par thème
-
-### Template [Thème 1] (appliqué à /[theme-1]/*.html)
-- Sections : [liste ordonnée]
-- Variantes autorisées : [si applicable]
-
-### Template [Thème 2] (appliqué à /[theme-2]/*.html)
-- Sections : [liste ordonnée]
-- Variantes autorisées : [si applicable]
+Chaque thème a son propre `template.md`.
+- `/[theme-1]/template.md` — appliqué à toutes les pages de `/[theme-1]/`
+- `/[theme-2]/template.md` — appliqué à toutes les pages de `/[theme-2]/`
 
 ## Header (commun à toutes les pages, sticky)
 
@@ -319,6 +308,51 @@ Les templates utilisent les **mêmes sections que pour une landing** (hero, bén
 - Plus riche qu'un footer de landing
 
 **Implémentation HTML :** header et footer sont répétés dans chaque page. Lors d'une modification (ex. renommage d'une page, ajout d'une nouvelle page à un thème), le menu dans header + footer doit être mis à jour **sur toutes les pages** en même temps (cascade gérée par `/ottho:corrige` ou un dialogue avec Claude Code).
+
+### Documents `section-[page].md` et `template.md` — structures types
+
+**`section-[nom-de-page].md`** — un par page top-level, à la racine :
+
+```markdown
+# Sections — [nom de la page]
+
+> Définit les sections de `[nom-de-page].html`.
+> Modifier ce fichier puis `/ottho:corrige` = met à jour uniquement `[nom-de-page].html`.
+
+## Ordre des sections
+1. Hero
+2. [...]
+
+## Détail par section
+### Section 1 — Hero
+- Contenu textuel : …
+- Contenu visuel : …
+[...]
+
+## SEO spécifique à cette page
+- title, meta description, h1, URL canonique
+```
+
+**`/[theme]/template.md`** — un par dossier thématique :
+
+```markdown
+# Template — [nom du thème]
+
+> S'applique à toutes les pages HTML de `/[theme]/` (par défaut).
+> Modifier ce fichier puis `/ottho:corrige` = cascade sur toutes les pages du dossier.
+
+## Sections (dans l'ordre)
+1. Hero [thème]
+2. [section spécifique]
+3. [...]
+4. CTA
+
+## Détail par section
+[...]
+
+## Variantes autorisées
+- [page-1.html] : ajoute une section « Témoignages ».
+```
 
 ### Règles de navigation pour un site
 

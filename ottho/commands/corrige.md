@@ -132,9 +132,9 @@ Que veux-tu corriger ?
 
 Selon le choix :
 
-- **Template** → affiche le contenu du template dans `arborescence.md` (la liste ordonnée de ses sections)
-- **Page spécifique** → ouvre le fichier `.html` concerné et liste ses sections
-- **Page top-level** → ouvre le fichier `.html` et liste ses sections
+- **Template** → ouvre le `template.md` du dossier thématique concerné (`/[theme]/template.md`) et affiche la liste ordonnée de ses sections
+- **Page spécifique** (déviation) → ouvre le fichier `.html` concerné et liste ses sections
+- **Page top-level** → ouvre le `section-[nom-de-page].md` correspondant à la racine (ex. `section-accueil.md`)
 
 ### B3. Recueillir la correction
 
@@ -153,15 +153,15 @@ Qu'est-ce que tu veux changer dans [template / page] ?
 
 #### Cas 1 — Correction d'un TEMPLATE
 
-1. **Mets à jour `arborescence.md`** dans la section « Templates par thème » concernée.
-2. **Liste les fichiers HTML concernés** (toutes les pages dans le dossier correspondant au thème).
+1. **Mets à jour le `template.md`** du dossier thématique concerné (ex. `/offres/template.md`).
+2. **Liste les fichiers HTML du dossier** (toutes les pages de `/offres/*.html`).
 3. **Montre à l'utilisateur cette liste avant d'appliquer** :
 
    ```
-   Le template [Thème] change. Ça va affecter :
-     - /[theme]/page-1.html
-     - /[theme]/page-2.html
-     - /[theme]/page-3.html
+   Le template /offres/template.md change. Ça va affecter :
+     - /offres/offre1.html
+     - /offres/offre2.html
+     - /offres/offre3.html
 
    Je répercute la correction sur ces 3 pages ?
    Oui / Non / Exclure certaines pages (précise)
@@ -171,28 +171,39 @@ Qu'est-ce que tu veux changer dans [template / page] ?
    - Conserve le contenu spécifique de chaque page (hero titre, prix, cas d'usage…)
    - Ne modifie que la structure ajoutée/changée
 
+**Cascade propre** : le `template.md` est la source de vérité du dossier. Toutes les pages qui ne dévient pas doivent le refléter strictement après la correction.
+
 #### Cas 2 — Correction d'une PAGE SPÉCIFIQUE (déviation)
 
-1. **Ne touche pas à `arborescence.md`** (la page dévie intentionnellement du template).
+1. **Ne touche pas au `template.md`** (la page dévie intentionnellement).
 2. **Mets à jour uniquement le fichier HTML concerné.**
-3. **Note la déviation** dans `arborescence.md` section « Variantes » du template :
+3. **Note la déviation** dans la section « Variantes autorisées » du `template.md` du dossier :
 
+   ```markdown
+   ## Variantes autorisées
+
+   - [page-spécifique.html] : ajoute une section « Témoignages » après « Tarif ».
    ```
-   ### Template [Thème]
-   Variantes enregistrées :
-   - [page-spécifique.html] a une section supplémentaire « [nom] »
-   ```
+
+Les autres pages du dossier restent fidèles au template standard.
 
 #### Cas 3 — Correction d'une PAGE TOP-LEVEL
 
-Identique au cas landing (parcours A) : mise à jour du HTML uniquement, pas de concept de cascade.
+1. **Mets à jour le `section-[nom-de-page].md`** correspondant (ex. `section-accueil.md`).
+2. **Régénère le fichier HTML** (`accueil.html`) en respectant le nouveau plan de sections.
+3. Header et footer communs intacts (sauf si la modification les concerne — auquel cas voir cas 4).
+
+Les autres pages top-level ne sont **pas affectées**.
 
 #### Cas 4 — Modification de la STRUCTURE
 
 1. **Mets à jour `arborescence.md`** : l'arbre du site.
 2. **Crée, renomme, ou supprime** les dossiers et fichiers correspondants.
-3. Si tu **renommes** une page : vérifie les liens internes (menu, footer, teasers) qui y pointent et mets-les à jour.
-4. Si tu **supprimes** une page : vérifie les liens internes et propose des redirections ou des suppressions de liens.
+3. Si tu **crées une nouvelle page top-level** : génère aussi son `section-[nom].md` à la racine.
+4. Si tu **crées un nouveau dossier thématique** : génère aussi son `template.md` (le définir avec l'utilisateur).
+5. Si tu **renommes** une page : renomme aussi son `section-[nom].md` ou son `template.md`, et vérifie les liens internes (menu, footer, teasers).
+6. Si tu **supprimes** une page : supprime son `section-[nom].md` correspondant, et vérifie les liens internes.
+7. Si tu **supprimes un dossier thématique** : supprime aussi son `template.md` et retire le thème du header/footer commun.
 
 ### B5. Clôture
 
