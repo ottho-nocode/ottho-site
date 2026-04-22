@@ -88,15 +88,20 @@ Correction **chirurgicale** d'une section (landing) ou d'une section de template
 
 Orchestre les 7 autres commandes dans l'ordre, avec point de validation à chaque étape. Reprenable via `.ottho/state.json`.
 
-## Les 5 skills embarquées
+## Les 6 skills embarquées
 
 | Skill | Rôle |
 |---|---|
 | `copywriting-framework` | AIDA + PAS + règles de tone of voice |
 | `site-structure` | Sections types + arborescence par thèmes + templates |
 | `image-generation` | Prompts Nano Banana + règles de cohérence visuelle d'un site |
+| `visual-quality` | Typographie, espacement, hiérarchie, accessibilité WCAG AA, patterns de sections pros |
 | `seo-checklist` | 10 points SEO à vérifier et corriger |
 | `cta-templates` | HTML formulaire + Vercel Function + script client |
+
+### 🎨 Intégration avec `ottho-design`
+
+Si vous installez aussi [le plugin `ottho-design`](https://github.com/ottho-nocode/ottho-design), le plugin `ottho` **détecte sa présence** et **mobilise ses skills** (`frontend-design`, `design-review`, `mockup`, `components`) pour un rendu visuel **encore plus qualitatif**. La skill `visual-quality` embarquée reste la base (80 % du travail), `ottho-design` pousse vers l'excellence.
 
 ## Structure du plugin
 
@@ -120,6 +125,7 @@ ottho/
     ├── copywriting-framework/SKILL.md
     ├── site-structure/SKILL.md
     ├── image-generation/SKILL.md
+    ├── visual-quality/SKILL.md
     ├── seo-checklist/SKILL.md
     └── cta-templates/SKILL.md
 ```

@@ -53,6 +53,41 @@ OK ? (oui / ajuster le stack)
 
 Si l'utilisateur veut un framework (Next.js, Astro…), arrête-toi et rappelle que ce cours reste en HTML/CSS/JS pur. Oriente vers une documentation externe.
 
+## Étape 2.bis — Activer la qualité visuelle (IMPORTANT)
+
+**Avant de générer la moindre ligne**, charge la skill **`visual-quality`** (embarquée dans le plugin ottho).
+
+Elle contient :
+- Échelle typographique (système 1.25)
+- Grille d'espacement (base 8)
+- Hiérarchie visuelle (3 leviers)
+- Règle couleurs 60/30/10
+- Accessibilité WCAG AA (contrastes, focus, touch targets)
+- Patterns de sections éprouvés (hero layouts, cards, témoignages, formulaires)
+- Micro-interactions sobres
+
+**Ensuite**, vérifie si l'utilisateur a installé le plugin **`ottho-design`** (via la présence de commandes `/ottho-design:*` dans Claude Code).
+
+### Si `ottho-design` est installé
+
+Invoque **en priorité** ses skills avant de générer :
+
+- `ottho-design:frontend-design` — pour des interfaces distinctives
+- `ottho-design:design-review` — pour autocritique visuelle
+- `ottho-design:components` — pour piocher dans des composants pros pré-faits
+
+**Dis à l'utilisateur :**
+
+> « Je détecte le plugin `ottho-design`. Je vais mobiliser ses skills pour un rendu visuel plus qualitatif, en complément de la skill `visual-quality` embarquée. »
+
+### Si `ottho-design` n'est pas installé
+
+Utilise uniquement la skill `visual-quality` embarquée. Le résultat restera **clairement au-dessus** du rendu générique IA.
+
+**Proposer** à l'utilisateur (sans forcer) :
+
+> « Pour un rendu visuel encore plus distinctif, tu peux installer le plugin complémentaire `ottho-design` : `/plugin install ottho-design@ottho-nocode` (voir github.com/ottho-nocode/ottho-design). On continue sans pour l'instant ? »
+
 ---
 
 ## Parcours A — Si LANDING (sections.md)
