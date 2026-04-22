@@ -5,11 +5,12 @@
 
 ## À qui ça s'adresse
 
-Ce plugin est le **raccourci final** du cours *Claude + Site web*. Il condense en 9 commandes tout ce qui a été enseigné au fil des 7 chapitres du cours :
+Ce plugin est le **raccourci final** du cours *Claude + Site web*. Il condense en 10 commandes tout ce qui a été enseigné au fil des 7 chapitres du cours :
 
 - Rédiger un brief clair (objectif, audience, copywriting)
 - Structurer le site : **`sections.md`** pour une landing, **`arborescence.md`** (pages + templates par thème) pour un site multi-pages
 - Générer des images uniques via **Nano Banana** (Google Gemini) sur fal.ai
+- **Construire les fichiers HTML/CSS/JS** à partir du plan d'architecture
 - Configurer un formulaire opérationnel (Resend + Airtable + Vercel Function)
 - Auditer et corriger le SEO
 - Déployer sur Vercel
@@ -40,7 +41,7 @@ Avant utilisation, les MCPs suivants doivent être connectés (procédures couve
 
 Tous s'installent par simple dialogue dans Claude Code (« Installe le MCP [nom] »). Zéro commande bash.
 
-## Les 9 commandes
+## Les 10 commandes
 
 Toutes les commandes sont namespacées sous `/ottho:` (convention Claude Code pour éviter les conflits entre plugins).
 
@@ -58,6 +59,10 @@ Produit votre plan d'architecture, adapté au type de site :
 ### `/ottho:generate-image`
 
 Génère une ou plusieurs images cohérentes avec votre charte via **Nano Banana** (Google Gemini, sur fal.ai). Idéal pour hero, Open Graph, illustrations de services, avatars.
+
+### `/ottho:build`
+
+Génère les fichiers HTML/CSS/JS du site à partir de `sections.md` (landing) ou `arborescence.md` (site multi-pages). Applique la charte graphique, intègre les images, produit un **header + footer commun** avec navigation (ancres pour landing, dropdowns thématiques pour site multi-pages). Responsive, SEO-ready, formulaires en placeholder.
 
 ### `/ottho:cta-setup`
 
@@ -104,6 +109,7 @@ ottho/
 │   ├── brief.md
 │   ├── architecture.md
 │   ├── generate-image.md
+│   ├── build.md
 │   ├── cta-setup.md
 │   ├── seo-audit.md
 │   ├── deploy.md

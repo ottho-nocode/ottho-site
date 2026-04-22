@@ -93,19 +93,21 @@ Sinon :
 
 ## Phase 4 — Génération du site (HTML/CSS/JS)
 
-1. À partir de `brief.md` + architecture + images disponibles, demande à Claude Code de **générer les fichiers HTML/CSS/JS** du site.
-   - **Landing** : un seul `index.html` qui empile les sections de `sections.md`.
-   - **Site multi-pages** : l'arborescence complète, avec toutes les pages top-level + les pages thématiques en appliquant les templates de `arborescence.md`.
-2. Applique **strictement** la charte graphique (palette, typos, ton visuel) décrite dans `brief.md`.
-3. Intègre les images générées à la bonne place avec `alt` descriptifs.
-4. SEO de base intégré (5 balises par page, structure H1/H2/H3 hiérarchisée).
-5. Responsive mobile-first.
-6. Formulaire HTML en placeholder (sera branché en Phase 5).
+Lance la logique de `/build` :
+
+- Détecte le type de site (sections.md → landing, arborescence.md → site multi-pages).
+- Charge la charte graphique (depuis brief.md ou charte.md).
+- Intègre les images disponibles dans `./assets/`.
+- **Landing** : un seul `index.html` avec header sticky (nav par ancres) + sections + footer léger.
+- **Site multi-pages** : toutes les pages HTML, avec header + footer commun (dropdowns thématiques, menu burger mobile), sitemap.xml, robots.txt.
+- SEO de base intégré (5 balises par page, structure H1/H2/H3).
+- Responsive mobile-first.
+- Formulaire HTML en placeholder (sera branché en Phase 5).
 
 **Après génération :**
-- Lance un serveur local pour prévisualisation.
+- Lance un serveur local pour prévisualisation (`python3 -m http.server 3000` ou équivalent).
 - **Checkpoint :** « Le site est-il validé (desktop + mobile) ? On passe au CTA ? (oui / ajustements / stop) »
-- Si ajustements : itère, re-checkpoint.
+- Si ajustements : itère via `/corrige` ou dialogue direct, re-checkpoint.
 
 ## Phase 5 — CTA opérationnel
 
