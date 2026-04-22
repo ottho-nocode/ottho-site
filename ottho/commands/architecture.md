@@ -58,39 +58,56 @@ Propose à l'utilisateur **une landing type de 5 à 8 sections**. Sélectionne p
 # Sections — [nom du projet]
 
 ## Ordre des sections
-1. Hero
-2. Problème
-3. Solution
-4. Bénéfices
-5. Preuve sociale
-6. FAQ
-7. CTA final
+1. Hero (id #hero)
+2. Problème (id #probleme)
+3. Solution (id #solution)
+4. Bénéfices (id #benefices)
+5. Preuve sociale (id #social)
+6. FAQ (id #faq)
+7. CTA final (id #cta)
 
----
+## Header (sticky)
+- Logo à gauche (lien vers #hero)
+- Menu : liens par ancres vers chaque section (#probleme, #solution, #benefices, #tarifs, #faq)
+- CTA mini à droite (optionnel, pointe vers #cta)
 
-## Section 1 — Hero
+## Section 1 — Hero (id: #hero)
 
 - **Contenu textuel :**
   - Titre principal : « … »
   - Sous-titre : « … »
   - CTA : « [verbe d'action + promesse] »
 - **Contenu visuel :**
-  - Image hero : [dimensions, prompt Nano Banana si à générer via /generate-image]
+  - Image hero : [dimensions, prompt Nano Banana si à générer via /ottho:generate-image]
   - Layout : [titre à gauche / image à droite, centré…]
 
-## Section 2 — Problème
+## Section 2 — Problème (id: #probleme)
 
 - **Contenu textuel :**
   - …
 - **Contenu visuel :**
   - …
 
-[Et ainsi de suite]
+[Et ainsi de suite — chaque section reçoit un id unique correspondant à un lien du header]
 
----
+## Footer
+- Mentions légales (obligatoire)
+- Politique de confidentialité (RGPD)
+- Liens réseaux sociaux
+- Copyright
 
 Architecture générée le [date] par le plugin ottho.
 ```
+
+### A3.bis — Règles importantes pour la génération HTML
+
+Quand tu génères le `index.html` à partir de ce plan :
+
+- **Chaque section reçoit un `id` HTML** (`<section id="probleme">`) pour que les liens du header fonctionnent.
+- **Header sticky** : `position: sticky; top: 0; z-index: 10;` en CSS.
+- **Menu uniquement avec ancres** (`href="#probleme"`) — jamais de lien vers d'autres pages.
+- **Scroll fluide** : ajoute `scroll-behavior: smooth;` au `html` ou `body` en CSS.
+- **Décalage d'ancre** : pense au `scroll-margin-top` égal à la hauteur du header sticky, sinon les sections sont masquées derrière le header au clic.
 
 ### A4. Arborescence de fichiers proposée
 
@@ -168,19 +185,40 @@ Rappel : **par défaut, toutes les pages d'un thème partagent le même template
 - Sections : [liste ordonnée]
 - Variantes autorisées : [si applicable]
 
-## Navigation
+## Header (commun à toutes les pages, sticky)
 
-Menu horizontal fixe, 3 à 6 entrées, identique sur toutes les pages.
-Footer : liens secondaires (mentions, RGPD, réseaux).
-CTA fixe en haut à droite : [« Contact » / « Devis »…]
+- Logo à gauche (renvoie vers accueil.html)
+- Menu principal :
+  - Pages top-level (Accueil, Équipe, Contact, etc.)
+  - Thèmes (chaque dossier /theme/ = une entrée)
+- Dropdown sous chaque thème qui liste les sous-pages du dossier :
+  - « [Thème 1] » → [page-1], [page-2], …
+  - « [Thème 2] » → [page-1], [page-2], …
+- CTA fixe en haut à droite (« Contact » / « Demander un devis »…)
+- Version mobile : menu burger, thèmes en accordéon
+
+## Footer (commun à toutes les pages)
+
+- Colonnes par thème (chaque thème avec ses sous-pages en liens)
+- Colonne « Entreprise » : À propos, Équipe, Contact, Recrutement
+- Colonne « Légal » : Mentions légales, Politique de confidentialité, CGV, Cookies
+- Colonne « Social » : LinkedIn, Instagram, YouTube, Email pro
+- Copyright
 
 ## CTA principal du site
 [verbe d'action + promesse concrète]
 
----
-
 Architecture générée le [date] par le plugin ottho.
 ```
+
+### B3.bis — Règles importantes pour la génération HTML
+
+Quand tu génères les pages HTML à partir de ce plan :
+
+- **Header et footer sont des composants communs** à toutes les pages : génère-les **une seule fois** en HTML, puis inclus-les dans chaque page (via copier-coller identique, ou via un script de build léger si disponible).
+- **Menu dropdown** : utilise HTML/CSS pur (pas de JS nécessaire pour un dropdown au hover en desktop).
+- **Version mobile** : JS minimaliste pour le menu burger et les accordéons par thème.
+- **Toujours vérifier la cohérence** : si une page est renommée, mettre à jour le lien dans header ET footer sur toutes les pages.
 
 ### B4. Arborescence de fichiers proposée
 

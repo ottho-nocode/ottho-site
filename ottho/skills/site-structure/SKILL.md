@@ -87,23 +87,51 @@ Une landing typique utilise **5 à 8 sections**. Piochez dans :
 - Étapes / roadmap (clarifier le parcours d'achat)
 - Ressources / presse (articles, podcasts, mentions)
 
+### Header et footer d'une landing
+
+Une landing a **un header en haut** et **un footer en bas**, comme tout site web.
+
+**Header :**
+- Logo à gauche (lien vers #hero, tout en haut)
+- Menu par **ancres** vers les sections (#probleme, #solution, #benefices, #tarifs, #faq)
+- CTA mini à droite (optionnel, pointe vers #cta)
+- **Sticky** (reste fixe au scroll)
+
+**Footer :**
+- Mentions légales (obligatoire)
+- Politique de confidentialité (RGPD)
+- Liens réseaux sociaux
+- Copyright
+
+Pas de menu de navigation dans le footer — la landing n'a qu'une seule page.
+
+### Navigation par ancres — règles techniques
+
+- Chaque section a un **id HTML unique** : `<section id="probleme">`
+- Les liens du header pointent vers ces id : `<a href="#probleme">`
+- CSS : `scroll-behavior: smooth;` pour un défilement doux
+- CSS : `scroll-margin-top: [hauteur du header];` sur chaque section pour compenser le sticky header
+
 ### Document `sections.md` — structure type
 
 ```markdown
 # Sections — [nom du projet]
 
 ## Ordre des sections
-1. Hero
-2. Problème
-3. Solution
-4. Bénéfices
-5. Preuve sociale
-6. FAQ
-7. CTA final
+1. Hero (id #hero)
+2. Problème (id #probleme)
+3. Solution (id #solution)
+4. Bénéfices (id #benefices)
+5. Preuve sociale (id #social)
+6. FAQ (id #faq)
+7. CTA final (id #cta)
 
----
+## Header (sticky)
+- Logo à gauche (lien vers #hero)
+- Menu : ancres vers chaque section
+- CTA mini à droite (optionnel)
 
-## Section 1 — Hero
+## Section 1 — Hero (id: #hero)
 
 - **Contenu textuel :**
   - Titre principal : « … »
@@ -113,14 +141,20 @@ Une landing typique utilise **5 à 8 sections**. Piochez dans :
   - Image hero : [dimensions, prompt Nano Banana si à générer]
   - Layout : [titre à gauche / image à droite, centré…]
 
-[Sections suivantes dans le même format]
+[Sections suivantes dans le même format, chacune avec son id]
+
+## Footer
+- Mentions légales
+- Politique de confidentialité
+- Réseaux sociaux
+- Copyright
 ```
 
 ### Arborescence d'une landing
 
 ```
 /ma-landing
-├── index.html              ← un seul fichier qui empile les sections
+├── index.html              ← un seul fichier (header + sections + footer)
 ├── sections.md             ← la boussole
 ├── /assets                 ← images
 └── /api                    ← Vercel Function (chapitre Hébergement)
@@ -131,7 +165,8 @@ Une landing typique utilise **5 à 8 sections**. Piochez dans :
 - **Une section = une idée unique.**
 - **Ordre logique** : hero → problème → solution → preuves → action.
 - **Maximum 8 sections.**
-- **Pas de menu** (contrairement à un site multi-pages). Zéro lien vers d'autres pages.
+- **Header + footer présents**, menu du header par **ancres** uniquement (pas de lien vers d'autres pages).
+- **Zéro lien vers d'autres pages** (contrairement à un site multi-pages).
 - **Deux CTA max, identiques** (hero + fin).
 - **Mobile-first.**
 
@@ -245,11 +280,23 @@ Claude Code répercute sur toutes les pages du dossier.
 - Sections : [liste ordonnée]
 - Variantes autorisées : [si applicable]
 
-## Navigation
+## Header (commun à toutes les pages, sticky)
 
-Menu horizontal fixe, 3 à 6 entrées, identique sur toutes les pages.
-Footer : liens secondaires (mentions, RGPD, réseaux).
-CTA fixe en haut à droite : [« Contact » / « Devis » / …]
+- Logo à gauche (renvoie vers accueil.html)
+- Menu principal :
+  - Pages top-level (Accueil, Équipe, Contact…)
+  - Thèmes (chaque dossier /theme/ = une entrée)
+- Dropdown sous chaque thème listant les sous-pages du dossier
+- CTA fixe en haut à droite (« Contact » / « Devis »…)
+- Version mobile : menu burger, thèmes en accordéon
+
+## Footer (commun à toutes les pages)
+
+- Colonnes par thème (chaque thème avec ses sous-pages)
+- Colonne « Entreprise » : À propos, Équipe, Contact, Recrutement
+- Colonne « Légal » : Mentions légales, Politique de confidentialité, CGV, Cookies
+- Colonne « Social » : LinkedIn, Instagram, YouTube, Email pro
+- Copyright
 
 ## CTA principal du site
 [verbe d'action + promesse concrète]
@@ -259,11 +306,27 @@ CTA fixe en haut à droite : [« Contact » / « Devis » / …]
 
 Les templates utilisent les **mêmes sections que pour une landing** (hero, bénéfices, preuve sociale, tarifs, CTA, etc.), mais appliquées à l'échelle d'une page thématique. Voir le catalogue dans la partie Landing plus haut.
 
+### Header et footer — communs à toutes les pages
+
+**Header (sticky, identique partout) :**
+- Logo à gauche → accueil.html
+- Menu principal avec pages top-level + thèmes
+- Dropdown sous chaque thème listant les sous-pages du dossier correspondant
+- CTA fixe en haut à droite
+
+**Footer (identique partout) :**
+- Plan de site secondaire par colonnes (un thème par colonne + colonnes Entreprise/Légal/Social)
+- Plus riche qu'un footer de landing
+
+**Implémentation HTML :** header et footer sont répétés dans chaque page. Lors d'une modification (ex. renommage d'une page, ajout d'une nouvelle page à un thème), le menu dans header + footer doit être mis à jour **sur toutes les pages** en même temps (cascade gérée par `/ottho:corrige` ou un dialogue avec Claude Code).
+
 ### Règles de navigation pour un site
 
-- Menu horizontal en haut : 3 à 6 entrées, identique partout
-- Footer : liens secondaires uniquement
+- Header identique partout, sticky au scroll
+- Menu principal : pages top-level + thèmes avec dropdowns
+- Footer identique partout
 - CTA fixe en haut à droite : « Contact » ou « Devis »
+- Version mobile : menu burger avec thèmes en accordéon
 - Depuis n'importe où, chaque autre page atteignable en 1 ou 2 clics
 
 ### Pièges à éviter
