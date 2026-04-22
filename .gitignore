@@ -6,3 +6,7 @@ node_modules/
 .env.local
 *.credentials.json
 .ottho/
+
+# Claude Code session state
+.claude-exchange-counter
+resume.md
