@@ -1,0 +1,20 @@
+{
+  "name": "ottho-site",
+  "owner": {
+    "name": "Ottho",
+    "email": "tools@ottho.co",
+    "url": "https://ottho.co"
+  },
+  "metadata": {
+    "description": "Marketplace des plugins Claude Code liés au cours academy.ottho.co « Claude + Site web ».",
+    "version": "2.0.0"
+  },
+  "plugins": [
+    {
+      "name": "ottho",
+      "source": "./ottho",
+      "description": "Plugin compagnon du cours « Claude + Site web » : produit, déploie et mesure une landing page ou un site multi-pages (sections, arborescence, templates), avec génération d'images via fal.ai + Nano Banana. Sans jamais taper de clé API.",
+      "version": "2.0.0"
+    }
+  ]
+}
